@@ -4,9 +4,9 @@ import Testanala from '../Testanala/Testanala';
 export default function Postlist({posts}) {
     
     return (
-        <content className='blogc'>
+        <div className='blogc'>
           {posts.map(post => 
-            <Testanala header={post.heading} content={post.data}/>)}
-        </content>
+            <Testanala key={Date.now()} header={post.heading} content={post.data}/>)}
+        </div>
     )
 }

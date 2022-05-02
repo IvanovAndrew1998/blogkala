@@ -40,6 +40,9 @@
 .headerc {
   height: 50px;
   background: teal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .blogc {
@@ -49,4 +52,9 @@
   align-items: center;
   width: 100%;
   padding: 30px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
 }
