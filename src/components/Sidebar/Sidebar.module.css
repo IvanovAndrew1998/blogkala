@@ -1,0 +1,7 @@
+.sidebar {
+    width: 25%;
+    max-width: 300px;
+    height: auto;
+    background: rgb(82, 158, 209);
+    padding: 30px;
+}

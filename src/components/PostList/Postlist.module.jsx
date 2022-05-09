@@ -1,12 +1,23 @@
 import React from 'react';
 import Testanala from '../Testanala/Testanala';
+import Loader from '../Loader/Loader';
 
-export default function Postlist({posts}) {
+export default function Postlist({posts, isFetching}) {
     
     return (
         <div className='blogc'>
-          {posts.map(post => 
-            <Testanala key={Date.now()} header={post.heading} content={post.data}/>)}
+            {/* {
+            if (isFetching) {<Loader/>}
+            else {
+            {posts.map(post => 
+                <Testanala key={post.data.hashCode} header={post.heading} content={post.data}/>)}
+            } } */}
+            {
+                isFetching
+                ? <Loader/>
+                : posts.map(post => 
+                    <Testanala key={post.data.hashCode} header={post.heading} content={post.data}/>)
+            }
         </div>
     )
 }

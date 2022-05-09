@@ -1,0 +1,29 @@
+.loader {
+    border: 5px solid teal;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+
+    animation-name: lomod;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes lomod {
+    from {
+        transform: scale(0) ;
+    }
+    to { 
+        
+        transform: scale(1) ;
+    }
+}
+/* @keyframes lorod {
+    from {
+        transform: rotate(0deg);
+    }
+    to { 
+        transform: rotate(360deg);
+    }
+} */
