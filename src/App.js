@@ -38,7 +38,7 @@ function App() {
   }
 
   function addPost(heading, body) {
-    setPosts([...posts, {heading: heading, data: body}]);
+    setPosts([{heading: heading, data: body}, ...posts]);
   }
 
   function sortPosts(posts, filterarg) {
