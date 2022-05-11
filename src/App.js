@@ -23,7 +23,6 @@ function App() {
   useEffect(
     // () => setPosts(sortPosts(filterPosts(posts, bukved), filtered)),
     // () => console.log(sortPosts(filterPosts(posts, bukved), filtered)),
-    ,
     [filtered, bukved]
   );
 
