@@ -1,59 +1,68 @@
-import './App.css';
-import { useState, useEffect } from 'react';
-import Postlist from './components/PostList/Postlist.module';
-import ModalWindow from './components/ModalWindow/ModalWindow';
 import axios from 'axios';
-import useFetching from './hooks/useFeching';
+import { useEffect, useState } from 'react';
+import './App.css';
+import ModalWindow from './components/ModalWindow/ModalWindow';
+import Postlist from './components/PostList/Postlist.module';
 import Sidebar from './components/Sidebar/Sidebar';
+import useFetching from './hooks/useFeching';
 
 
 function App() {
   const [posts, setPosts] = useState([]);
   const [modalvis, setModalVis] = useState(false);
-  const [filtered, setFilter] = useState("unfiltred");
-  const [isPostFecting, fetchPostO] = useFetching(fetchPosts);
+  const [isPostFecting, fetchFunc] = useFetching(fetchPosts);
+
+  const [filtredPosts, setFiltredPosts] = useState([]);
+  const [sorted, setSorted] = useState("straight");
   const [bukved, setBukved] = useState();
 
   useEffect(
     () => {
-      fetchPostO();
-    }, []
+            fetchFunc(() => fetchPosts());
+            setFiltredPosts(posts);
+          }, 
+    []
   );
 
   useEffect(
-    // () => setPosts(sortPosts(filterPosts(posts, bukved), filtered)),
-    // () => console.log(sortPosts(filterPosts(posts, bukved), filtered)),
-    [filtered, bukved]
+    () => filterPosts()
+    ,
+    [sorted, bukved]
   );
 
 
   async function fetchPosts() {
+    const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
+    
     function transform (post_elem) {
       return {heading: post_elem.title, 
               data: post_elem.body}
     }
-    const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
     setPosts(response.data.map(transform));
+    setFiltredPosts(response.data.map(transform));
   }
+
 
   function addPost(heading, body) {
     setPosts([{heading: heading, data: body}, ...posts]);
   }
 
-  function sortPosts(posts, filterarg) {
-    console.log(posts);
-    switch (filterarg) {
+  
+  function filterPosts() {
+    const filtred_posts = posts.filter( 
+      post => post.heading.includes(bukved)
+    );
+
+    let processed_post = Object;
+    switch (sorted) {
       case "straight":
-        return [...posts].sort((a, b) => a.heading.localeCompare(b.heading))
+        processed_post = filtred_posts.sort((a, b) => a.heading.localeCompare(b.heading))
         break;
       case 'reversed':
-        return [...posts].sort((a, b) => b.heading.localeCompare(a.heading))
+        processed_post = filtred_posts.sort((a, b) => b.heading.localeCompare(a.heading))
       }
-  }
-
-  function filterPosts(posts, filterarg) {
-    return [...posts].filter(post => post.heading.includes(filterarg), posts);
-  }
+      setFiltredPosts(processed_post);
+  };
 
 
 
@@ -64,8 +73,8 @@ function App() {
           <button onClick={() => setModalVis(true) } >Добавить</button>
         </header>
         <div className='content'>
-          <Sidebar changeFiltred={setFilter} setBukved={setBukved}></Sidebar>
-          <Postlist posts={posts} isFetching={isPostFecting}/>
+          <Sidebar changeSorted={setSorted} setBukved={setBukved}></Sidebar>
+          <Postlist posts={filtredPosts} isFetching={isPostFecting}/>
         </div>
         
         <ModalWindow visible={modalvis} setVisible={setModalVis} addPost={addPost} />
